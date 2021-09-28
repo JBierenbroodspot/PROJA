@@ -4,10 +4,14 @@ from django.shortcuts import render
 
 
 class MessageView(django.views.View):
-    TEMPLATE = r""
+    TEMPLATE = r"templates/message_view.html"
 
-    def get(self, request: object, *args, **kwargs) -> HttpResponse:
+    def get(self, request: object, station: str) -> HttpResponse:
         context: dict[object] = {}
+        if station:
+            pass
+        else:
+            pass
         return render(request, self.TEMPLATE, context)
 
 
