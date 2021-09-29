@@ -1,7 +1,7 @@
-from typing import overload, Any
+from typing import Any
 
 import django.views
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from ns_zuil import models, forms
