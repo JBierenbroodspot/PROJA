@@ -12,3 +12,7 @@ class MessageForm(forms.Form):
     firstname = forms.CharField(max_length=255, required=False)
     insertion = forms.CharField(max_length=255, required=False)
     lastname = forms.CharField(max_length=255, required=False)
+
+
+class ModerationForm(forms.Form):
+    status = forms.ChoiceField(choices=({"Accepteren": "ACCEPTED"}, {"Weigeren": "DENIED"}))
