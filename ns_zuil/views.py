@@ -33,6 +33,14 @@ class MessageView(django.views.generic.edit.FormView):
         self.success_url = self.request.path_info
         return super().form_valid(form)
 
+    @staticmethod
+    def clean(form: forms.MessageForm) -> dict[Any]:
+        cleaned: dict[Any] = form.cleaned_data
+        if cleaned["firstname"] == "" and cleaned["lastname"] == "":
+            cleaned["firstname"] = "A."
+            cleaned["lastname"] = "Noniem"
+        return cleaned
+
 
 class ChooseStationView(django.views.generic.edit.FormView):
     template_name = "select_station_form.html"
