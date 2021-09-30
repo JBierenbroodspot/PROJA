@@ -1,6 +1,7 @@
 from typing import Any
 
 import django.views
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -10,7 +11,7 @@ from ns_zuil import models, forms
 class MessageView(django.views.generic.edit.FormView):
     template_name = "write_message.html"
     form_class = forms.MessageForm
-    success_url = "#"
+    success_url = "station"
 
     def form_valid(self, form):
         cleaned: dict[Any] = form.cleaned_data
@@ -35,9 +36,12 @@ class ChooseStationView(django.views.generic.edit.FormView):
         return super().form_valid(form)
 
 
-class ModeratorView(django.views.View):
-    TEMPLATE = r""
+# @login_required
+class ModeratorView(django.views.generic.edit.FormView):
+    template_name = "moderation_form.html"
+    form_class = forms.ModerationForm
+    success_url = "moderate"
 
-    def get(self, request: Any, *args, **kwargs) -> HttpResponse:
-        context: dict[Any] = {}
-        return render(request, self.TEMPLATE, context)
+    def form_valid(self, form):
+        return super().form_valid(form)
+
