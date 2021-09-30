@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Schrijf een bericht
+    {{ station.name }}
 {% endblock %}
 
 {% block content %}
+    <h3>Welkom op {{ station }}! Laat hier uw mening achter!</h3>
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
