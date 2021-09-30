@@ -11,7 +11,7 @@ from ns_zuil import models, forms
 
 
 class MessageView(django.views.generic.edit.FormView):
-    template_name = "write_message.html"
+    template_name = "message_form.html"
     form_class = forms.MessageForm
 
     def get_context_data(self, **kwargs):
@@ -35,7 +35,7 @@ class MessageView(django.views.generic.edit.FormView):
 
 
 class ChooseStationView(django.views.generic.edit.FormView):
-    template_name = "select_station.html"
+    template_name = "select_station_form.html"
     form_class = forms.StationForm
 
     def form_valid(self, form):
