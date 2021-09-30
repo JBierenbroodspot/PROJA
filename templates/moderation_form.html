@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <ul>
+        <li>{{ message.fullname }} @{{ message.station_fk }}</li>
+        <li>{{ message.message }}</li>
+        <li>{{ message.post_datetime }}</li>
+    </ul>
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}

@@ -11,7 +11,7 @@ from ns_zuil import models, forms
 class MessageView(django.views.generic.edit.FormView):
     template_name = "write_message.html"
     form_class = forms.MessageForm
-    success_url = "station"
+    success_url = "#"
 
     def form_valid(self, form):
         cleaned: dict[Any] = form.cleaned_data
@@ -42,6 +42,10 @@ class ModeratorView(django.views.generic.edit.FormView):
     form_class = forms.ModerationForm
     success_url = "moderate"
 
+    def get_context_data(self, **kwargs):
+        context = super(ModeratorView, self).get_context_data(**kwargs)
+        context["message"] = models.Message.objects.first()
+        return context
+
     def form_valid(self, form):
         return super().form_valid(form)
-
