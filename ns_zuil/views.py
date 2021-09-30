@@ -5,6 +5,7 @@ import django.views
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
+from django.utils.timezone import make_aware
 
 from ns_zuil import models, forms
 
@@ -63,7 +64,7 @@ class ModeratorView(django.views.generic.edit.FormView):
         cleaned: dict[Any] = form.cleaned_data
         message: models.Message = self.get_context_data()["message"]
         message.status = cleaned["status"]
-        message.moderation_datetime = datetime.datetime.now()
+        message.moderation_datetime = make_aware(datetime.datetime.now())
         message.moderated_by_fk = self.request.user
         message.save()
         self.success_url = self.request.path_info
