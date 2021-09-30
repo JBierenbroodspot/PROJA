@@ -16,6 +16,10 @@ class Message(models.Model):
     def __str__(self):
         return f"Message {self.id}"
 
+    @property
+    def fullname(self):
+        return " ".join(map(str, [self.firstname, self.insertion, self.lastname]))
+
 
 class Station(models.Model):
     name: models.CharField = models.CharField(max_length=255, unique=True)
