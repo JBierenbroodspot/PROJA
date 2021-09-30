@@ -1,9 +1,11 @@
+import datetime
 from typing import Any
 
 import django.views
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 
 from ns_zuil import models, forms
 
@@ -36,7 +38,7 @@ class ChooseStationView(django.views.generic.edit.FormView):
         return super().form_valid(form)
 
 
-# @login_required
+@method_decorator(login_required, name="dispatch")
 class ModeratorView(django.views.generic.edit.FormView):
     template_name = "moderation_form.html"
     form_class = forms.ModerationForm
@@ -48,4 +50,10 @@ class ModeratorView(django.views.generic.edit.FormView):
         return context
 
     def form_valid(self, form):
+        cleaned = form.cleaned_data
+        message = self.get_context_data()["message"]
+        message.status = cleaned["status"]
+        message.moderation_datetime = datetime.datetime.now()
+        message.moderated_by_fk = self.request.user
+        message.save()
         return super().form_valid(form)
