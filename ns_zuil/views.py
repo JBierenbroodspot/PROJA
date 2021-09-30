@@ -13,7 +13,6 @@ from ns_zuil import models, forms
 class MessageView(django.views.generic.edit.FormView):
     template_name = "write_message.html"
     form_class = forms.MessageForm
-    success_url = "#"
 
     def get_context_data(self, **kwargs):
         context = super(MessageView, self).get_context_data(**kwargs)
@@ -21,7 +20,6 @@ class MessageView(django.views.generic.edit.FormView):
         return context
 
     def form_valid(self, form):
-        print(self.get_context_data())
         cleaned: dict[Any] = form.cleaned_data
         if cleaned["firstname"] == "" and cleaned["lastname"] == "":
             cleaned["firstname"] = "A."
@@ -32,6 +30,7 @@ class MessageView(django.views.generic.edit.FormView):
                                  lastname=cleaned["lastname"],
                                  station_fk_id=self.get_context_data()["station"].id)
         message.save()
+        self.success_url = self.request.path_info
         return super().form_valid(form)
 
 
@@ -50,7 +49,6 @@ class ChooseStationView(django.views.generic.edit.FormView):
 class ModeratorView(django.views.generic.edit.FormView):
     template_name = "moderation_form.html"
     form_class = forms.ModerationForm
-    success_url = "moderate"
 
     def get_context_data(self, **kwargs):
         context = super(ModeratorView, self).get_context_data(**kwargs)
@@ -64,4 +62,5 @@ class ModeratorView(django.views.generic.edit.FormView):
         message.moderation_datetime = datetime.datetime.now()
         message.moderated_by_fk = self.request.user
         message.save()
+        self.success_url = self.request.path_info
         return super().form_valid(form)
