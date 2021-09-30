@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <ul>
-        <li>{{ message.fullname }} @{{ message.station_fk }}</li>
-        <li>{{ message.message }}</li>
-        <li>{{ message.post_datetime }}</li>
-    </ul>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Oké">
-    </form>
+    {% if message %}
+        <ul>
+            <li>{{ message.fullname }} @{{ message.station_fk }}</li>
+            <li>{{ message.message }}</li>
+            <li>{{ message.post_datetime }}</li>
+        </ul>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Oké">
+        </form>
+    {% else %}
+        <h1>Er zijn op dit moment geen berichten om te modereren, kom later terug!</h1>
+    {% endif %}
 {% endblock %}
