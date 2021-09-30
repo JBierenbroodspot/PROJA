@@ -15,4 +15,7 @@ class MessageForm(forms.Form):
 
 
 class ModerationForm(forms.Form):
-    status = forms.ChoiceField(choices=({"Accepteren": "ACCEPTED"}, {"Weigeren": "DENIED"}))
+    status = forms.ChoiceField(choices=(
+        ("ACCEPTED", "Accepteren"),
+        ("DENIED", "Weigeren"),
+    ))
