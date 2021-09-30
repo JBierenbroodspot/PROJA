@@ -15,7 +15,13 @@ class MessageView(django.views.generic.edit.FormView):
     form_class = forms.MessageForm
     success_url = "#"
 
+    def get_context_data(self, **kwargs):
+        context = super(MessageView, self).get_context_data(**kwargs)
+        context["station"] = models.Station.objects.get(id=int(self.kwargs["station_id"]))
+        return context
+
     def form_valid(self, form):
+        print(self.get_context_data())
         cleaned: dict[Any] = form.cleaned_data
         if cleaned["firstname"] == "" and cleaned["lastname"] == "":
             cleaned["firstname"] = "A."
@@ -24,7 +30,7 @@ class MessageView(django.views.generic.edit.FormView):
                                  firstname=cleaned["firstname"],
                                  insertion=cleaned["insertion"],
                                  lastname=cleaned["lastname"],
-                                 station_fk_id=int(self.request.session.get("station_id")))
+                                 station_fk_id=self.get_context_data()["station"].id)
         message.save()
         return super().form_valid(form)
 
@@ -32,12 +38,11 @@ class MessageView(django.views.generic.edit.FormView):
 class ChooseStationView(django.views.generic.edit.FormView):
     template_name = "select_station.html"
     form_class = forms.StationForm
-    success_url = "station/"
 
     def form_valid(self, form):
         cleaned: dict[Any] = form.cleaned_data
-        self.request.session["station_id"] = cleaned["station"].pk
-        self.success_url += str(cleaned["station"].pk)
+        self.get_context_data()["station_id"] = cleaned["station"].pk
+        self.success_url = str(cleaned["station"].pk)
         return super().form_valid(form)
 
 
