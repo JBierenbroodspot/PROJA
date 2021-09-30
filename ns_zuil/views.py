@@ -17,6 +17,9 @@ class MessageView(django.views.generic.edit.FormView):
 
     def form_valid(self, form):
         cleaned: dict[Any] = form.cleaned_data
+        if cleaned["firstname"] == "" and cleaned["lastname"] == "":
+            cleaned["firstname"] = "A."
+            cleaned["lastname"] = "Noniem"
         message = models.Message(message=cleaned["message"],
                                  firstname=cleaned["firstname"],
                                  insertion=cleaned["insertion"],
@@ -46,7 +49,7 @@ class ModeratorView(django.views.generic.edit.FormView):
 
     def get_context_data(self, **kwargs):
         context = super(ModeratorView, self).get_context_data(**kwargs)
-        context["message"] = models.Message.objects.first()
+        context["message"] = models.Message.objects.filter(status="PENDING").first()
         return context
 
     def form_valid(self, form):
