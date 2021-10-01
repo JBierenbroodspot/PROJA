@@ -363,6 +363,6 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </body>
 </table>
 
-[bpmn]: https://github.com/JBierenbroodspot/PROJA/tree/doc/doc/models/ns_zuil_BPMN.png "BMPN model showing the process of the application"
+[bpmn]: https://github.com/JBierenbroodspot/PROJA/blob/doc/doc/models/ns_zuil_BPMN.png?raw=true "BMPN model showing the process of the application"
 
-[ucd]: https://github.com/JBierenbroodspot/PROJA/tree/doc/doc/models/ns_zuil_BPMN.png "Use case diagram showing actors and their actions"
+[ucd]: https://github.com/JBierenbroodspot/PROJA/blob/doc/doc/models/ns_zuil_UC.png?raw=True "Use case diagram showing actors and their actions"
