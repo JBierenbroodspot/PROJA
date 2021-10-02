@@ -264,31 +264,51 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   <body>
     <tr>
       <td><strong>ID</strong></td>
-      <td><strong>PROJ_A_01 V0.1</strong></td>
+      <td><strong>PROJ_A_03 V0.1</strong></td>
     </tr>
     <tr>
       <td>Naam</td>
-      <td>Bericht schrijven</td>
+      <td>Bericht accepteren</td>
     </tr>
     <tr>
       <td>Actoren</td>
       <td>
         <ul>
-          <li>Klant</li>
+          <li>Moderator</li>
         </ul>
       </td>
     </tr>
     <tr>
+      <td>Precondities</td>
+      <td>
+        <ol> 
+          <li>Actor is ingelogd.</li>
+          <li>Er zijn berichten beschikbaar.</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
       <td>Samenvatting</td>
-      <td></td>
+      <td>Systeem weergeeft een enkel bericht en actor kiest accepteren (i). Systeem Weergeeft bericht op scherm (o).</td>
     </tr>
     <tr>
       <td>Scenario</td>
-      <td></td>
+      <td>
+        <ul>
+          <li>1. Systeem weergeeft één bericht.</li>
+          <li>2. Actor k1.	Bericht wordt weergeven.iest accepteren.</li>
+          <li>3. Systeem markeert bericht als geaccepteerd in database.</li>
+          <li>4. Systeem weergeeft bericht op scherm (Postconditie 1).</li>
+        </ul>
+      </td>
     </tr>
     <tr>
       <td>Postcondities</td>
-      <td></td>
+      <td>
+        <ol>
+          <li>Bericht wordt weergeven.</li>
+        </ol>
+      </td>
     </tr>
   </body>
 </table>
@@ -299,31 +319,50 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   <body>
     <tr>
       <td><strong>ID</strong></td>
-      <td><strong>PROJ_A_01 V0.1</strong></td>
+      <td><strong>PROJ_A_04 V0.1</strong></td>
     </tr>
     <tr>
       <td>Naam</td>
-      <td>Bericht schrijven</td>
+      <td>Bericht weigeren</td>
     </tr>
     <tr>
       <td>Actoren</td>
       <td>
         <ul>
-          <li>Klant</li>
+          <li>Moderator</li>
         </ul>
       </td>
     </tr>
     <tr>
+      <td>Precondities</td>
+      <td>
+        <ol> 
+          <li>Actor is ingelogd.</li>
+          <li>Er zijn berichten beschikbaar.</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
       <td>Samenvatting</td>
-      <td></td>
+      <td>Systeem weergeeft een enkel bericht en actor kiest weigeren (i). Systeem markeert bericht als geweigerd in database (o).</td>
     </tr>
     <tr>
       <td>Scenario</td>
-      <td></td>
+      <td>
+        <ul>
+          <li>1. Systeem weergeeft een enkel bericht.</li>
+          <li>2. Actor kies weigeren.</li>
+          <li>3. Systeem markeert bericht als geweigerd in database (Postconditie 1).</li>
+        </ul>
+      </td>
     </tr>
     <tr>
       <td>Postcondities</td>
-      <td></td>
+      <td>
+        <ol>
+          <li>Bericht is gemarkeerd als geweigerd.</li>
+        </ol>
+      </td>
     </tr>
   </body>
 </table>
@@ -334,31 +373,49 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   <body>
     <tr>
       <td><strong>ID</strong></td>
-      <td><strong>PROJ_A_01 V0.1</strong></td>
+      <td><strong>PROJ_A_05 V0.1</strong></td>
     </tr>
     <tr>
       <td>Naam</td>
-      <td>Bericht schrijven</td>
+      <td>Overzicht bekijken</td>
     </tr>
     <tr>
       <td>Actoren</td>
       <td>
         <ul>
-          <li>Klant</li>
+          <li>Moderator</li>
         </ul>
       </td>
     </tr>
     <tr>
+      <td>Precondities</td>
+      <td>
+        <ol> 
+          <li>Actor is ingelogd.</li>
+        </ol>
+      </td>
+    </tr>
+    <tr>
       <td>Samenvatting</td>
-      <td></td>
+      <td>Systeem wacht het openen van het overzicht (i). Systeem weergeeft geweigerde berichten (o).</td>
     </tr>
     <tr>
       <td>Scenario</td>
-      <td></td>
+      <td>
+        <ul>
+          <li>1.	Systeem wacht op openen van overzicht.</li>
+          <li>2.	Actor kiest voor het openen van overzicht.</li>
+          <li>3.	Systeem weergeeft berichten gemarkeerd als geweigerd (Postconditie 1).</li>
+        </ul>
+      </td>
     </tr>
     <tr>
       <td>Postcondities</td>
-      <td></td>
+      <td>
+        <ol>
+          <li>Overzicht wordt weergeven.</li>
+        </ol>
+      </td>
     </tr>
   </body>
 </table>
