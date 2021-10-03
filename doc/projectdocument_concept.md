@@ -420,6 +420,49 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </body>
 </table>
 
+<h2>Datamodel</h2>
+
+<h3>Conceptueel datamodel</h3>
+
+![Conceptuele ERD][erd_conc]
+
+<table>
+  <thead>
+    <tr>
+      <td><strong>Entiteit</strong></td>
+      <td><strong>Beschrijving</strong></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Station</td>
+      <td>Het station is waar basisinformatie over het station waar de zuil staat wordt weergeven. Elk station krijgt een id voor simpele identificatie en een naam om te weergeven.</td>
+    </tr>
+    <tr>
+      <td>Message</td>
+      <td>In message wordt alle informatie over het bericht dat de gebruiker schrijft opgeslagen. Ook wordt er bijgehouden wat de status is van het bericht (of het geaccepteerd is of niet) en wanneer het gemodereerd is.</td>
+    </tr>
+    <tr>
+      <td>User</td>
+      <td>User is eigenlijk alleen maar een account voor een moderator om ervoor te zorgen dat niet iedereen zomaar berichten kan modereren.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Logisch datamodel</h3>
+
+![Logisch datamodel][erd_logic]
+
+<h3>Fysiek datamodel</h3>
+
+![Fysiek datamodel][erd_phys]
+
 [bpmn]: https://github.com/JBierenbroodspot/PROJA/blob/doc/doc/models/ns_zuil_BPMN.png?raw=true "BMPN model showing the process of the application"
 
 [ucd]: https://github.com/JBierenbroodspot/PROJA/blob/doc/doc/models/ns_zuil_UC.png?raw=True "Use case diagram showing actors and their actions"
+
+[erd_conc]: https://github.com/JBierenbroodspot/PROJA/blob/doc/doc/models/ns_zuil_erd_conceptueel.png?raw=true "Conceptual ERD"
+
+[erd_logic]: https://github.com/JBierenbroodspot/PROJA/blob/doc/doc/models/ns_zuil_erd_logisch.png?raw=true "Logical ERD"
+
+[erd_phys]: https://github.com/JBierenbroodspot/PROJA/blob/doc/doc/models/ns_zuil_erd_fysiek.png?raw=true "Physical ERD"
