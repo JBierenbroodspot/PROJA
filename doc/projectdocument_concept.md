@@ -66,7 +66,7 @@
 
 <h3 name="chap_1_5">1.5 *Leeswijzer</h3>
 
-<a href="index">Terug naar inhoudsopgave...</a>
+<a href="#index">Terug naar inhoudsopgave...</a>
 
 <h2 name="chap_2">2. Functionaliteit</h2>
 
@@ -99,7 +99,7 @@ geaccepteerd is wordt die met behulp van de twitter API getweet.</p>
 van de meest recente tweets worden weergeven met eventuele naam. Als er een tijd geen tweets zijn gepost wordt het
 weerbericht voor de plaats van het station weergeven.</p>
 
-<a href="index">Terug naar inhoudsopgave...</a>
+<a href="#index">Terug naar inhoudsopgave...</a>
 
 <h2 name="chap_3">3. Gedrag</h2>
 
@@ -432,7 +432,7 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </body>
 </table>
 
-<a href="index">Terug naar inhoudsopgave...</a>
+<a href="#index">Terug naar inhoudsopgave...</a>
 
 <h2 name="chap_4">4. Datamodel</h2>
 
@@ -469,9 +469,9 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
 
 <h3 name="chap_4_3">4.3 Fysiek datamodel</h3>
 
-<a href="index">Terug naar inhoudsopgave...</a>
-
 ![Fysiek datamodel][erd_phys]
+
+<a href="#index">Terug naar inhoudsopgave...</a>
 
 [bpmn]: https://github.com/JBierenbroodspot/PROJA/blob/doc/doc/models/ns_zuil_BPMN.png?raw=true "BMPN model showing the process of the application"
 
