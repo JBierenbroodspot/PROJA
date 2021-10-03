@@ -3,6 +3,7 @@ from typing import Any
 
 import django.views
 from django.contrib.auth.decorators import login_required
+from django.db.models import QuerySet
 from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.utils.timezone import make_aware
@@ -116,3 +117,10 @@ class ModeratorView(django.views.generic.edit.FormView):
         message.save()
         self.success_url = self.request.path_info
         return super().form_valid(form)
+
+
+@method_decorator(login_required, name="dispatch")
+class DeniedView(django.views.generic.ListView):
+    model = models.Message
+    queryset = models.Message.objects.filter(status="DENIED")
+    template_name = "denied_messages_list.html"

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Denied messages
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'moderate' %}">Terug naar modereren</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Message</th>
+                <th>Full name</th>
+                <th>Posted on</th>
+                <th>Station</th>
+                <th>Moderated by</th>
+                <th>Moderated on</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in object_list %}
+                <tr>
+                    <td>{{ message.message }}</td>
+                    <td>{{ message.fullname }}</td>
+                    <td>{{ message.post_datetime }}</td>
+                    <td>{{ message.station_fk }}</td>
+                    <td>{{ message.moderated_by_fk.username }}</td>
+                    <td>{{ message.moderation_datetime }}</td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
