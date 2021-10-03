@@ -12,61 +12,61 @@
   <li>
     <a href="#chap_1">1. Inleiding</a>
     <ul>
-      <li>1.1 Aanleiding</li>
-      <li>1.2 Doelstelling</li>
-      <li>1.3 Opzet</li>
-      <li>1.4 *Doelgroep</li>
-      <li>1.5 *Leeswijzer</li>
+      <li><a href="#chap_1_1">1.1 Aanleiding</a></li>
+      <li><a href="#chap_1_2">1.2 Doelstelling</a></li>
+      <li><a href="#chap_1_3">1.3 Opzet</a></li>
+      <li><a href="#chap_1_4">1.4 *Doelgroep</a></li>
+      <li><a href="#chap_1_5">1.5 *Leeswijzer</a></li>
     </ul>
   </li>
   <li>
-    2. Functionaliteit
+    <a href="#chap_2">2. Functionaliteit</a>
     <ul>
-      <li>2.1 Module 1: Computerzuil</li>
-      <li>2.2 Module 2: Moderatie</li>
-      <li>2.3 Module 3: Scherm</li>
+      <li><a href="#chap_2_1">2.1 Module 1: Computerzuil</a></li>
+      <li><a href="#chap_2_2">2.2 Module 2: Moderatie</a></li>
+      <li><a href="#chap_2_3">2.3 Module 3: Scherm</a></li>
     </ul>
   <li>
-    3. Gedrag
+    <a href="#chap_3">3. Gedrag</a>
     <ul>
-      <li>3.1 BPMN</li>
-      <li>3.2 Use case</li>
-      <li>3.3 Actor beschrijvingen</li>
+      <li><a href="#chap_3_1">3.1 BPMN</a></li>
+      <li><a href="#chap_3_2">3.2 Use case</a></li>
+      <li><a href="#chap_3_3">3.3 Actor beschrijvingen</a></li>
       <li>
-        3.4 Use case beschrijvingen
+        <a href="#chap_3_4">3.4 Use case beschrijvingen</a>
         <ul>
-          <li>3.4.1 Proj a 01</li>
-          <li>3.4.2 Proj a 02</li>
-          <li>3.4.3 Proj a 03</li>
-          <li>3.4.4 Proj a 04</li>
-          <li>3.4.5 Proj a 05</li>
+          <li><a href="#chap_3_4_1">3.4.1 Proj a 01</a></li>
+          <li><a href="#chap_3_4_2">3.4.2 Proj a 02</a></li>
+          <li><a href="#chap_3_4_3">3.4.3 Proj a 03</a></li>
+          <li><a href="#chap_3_4_4">3.4.4 Proj a 04</a></li>
+          <li><a href="#chap_3_4_5">3.4.5 Proj a 05</a></li>
         </ul>
       </li>
     </ul>
   </li>
   <li>
-    4. Datamodel
+    <a href="#chap_4">4. Datamodel</a>
     <ul>
-      <li>4.1 Conceptueel datamodel</li>
-      <li>4.2 Logisch datamodel</li>
-      <li>4.3 Fysiek datamodel</li>
+      <li><a href="#chap_4_1">4.1 Conceptueel datamodel</a></li>
+      <li><a href="#chap_4_2">4.2 Logisch datamodel</a></li>
+      <li><a href="#chap_4_3">4.3 Fysiek datamodel</a></li>
     </ul>
   </li>
 </ul>
 
 <h2 name="chap_1">1. Inleiding</h2>
 
-<h3>1.2 Aanleiding</h3>
+<h3 name="chap_1_1">1.1 Aanleiding</h3>
 
-<h3>1.3 Doelstelling</h3>
+<h3 name="chap_1_2">1.2 Doelstelling</h3>
 
-<h3>1.4 Opzet<h3>
+<h3 name="chap_1_3">1.3 Opzet<h3>
 
-<h3>1.5 *Doelgroep</h3>
+<h3 name="chap_1_4">1.4 *Doelgroep</h3>
 
-<h3>1.6 *Leeswijzer</h3>
+<h3 name="chap_1_5">1.5 *Leeswijzer</h3>
 
-<h2>2. Functionaliteit</h2>
+<h2 name="chap_2">2. Functionaliteit</h2>
 
 <p>Het systeem bestaat uit drie modules: computerzuil, moderatie, scherm. Deze modules zullen samenwerken samen met de API
 van Twitter om ervoor te zorgen dat reizigers in de vorm van een tweet hun mening op een scherm op een NS-station kunnen
@@ -74,7 +74,7 @@ delen. Hiervoor zijn wat ICT-voorzieningen nodig: Een computerzuil voor het invo
 het modereren van berichten, een database, internetverbinding en een scherm voor het weergeven van de Tweets. Hieronder
 zal er per module beschreven worden wat ze doen.</p>
 
-<h3>2.1 Module 1: Computerzuil</h3>
+<h3 name="chap_2_1">2.1 Module 1: Computerzuil</h3>
 
 De computerzuil staat op een station van NS. Dit is in de vorm van een webpagina die intern op de zuil bereikbaar is er
 wordt geacht dat de gebruiker die niet kan aanpassen: scherm verkleinen, scherm sluiten of url aanpassen. Op deze pagina
@@ -83,7 +83,7 @@ optioneel. Het bericht kan maximaal 140 karakters lang zijn. Als alle gewenste g
 versturen gedrukt worden. Het bericht wordt opgeslagen in een database samen met het station waar de zuil zich bevindt
 en is klaar om gemodereerd te worden.
 
-<h3>2.2 Module 2: Moderatie</h3>
+<h3 name="chap_2_2">2.2 Module 2: Moderatie</h3>
 
 <p>Het modereren begint als een moderator inlogt. De moderator krijgt dan een enkel bericht te zien en kan dan kiezen voor
 accepteren of weigeren. Als de moderator kiest voor accepteren wordt het bericht met de status ‘geaccepteerd’ in de
@@ -91,19 +91,19 @@ database te staan. Als de moderator kiest voor weigeren komt het bericht met de 
 staan. Naast de status wordt ook de moderator en tijd van moderatie aan het bericht gekoppeld. Als een bericht
 geaccepteerd is wordt die met behulp van de twitter API getweet.</p>
 
-<h3>2.3 Module 3: Scherm</h3>
+<h3 name="chap_2_3">2.3 Module 3: Scherm</h3>
 
 <p>Het scherm is een scherm op een NS-station waar de tweets die in module 2 getweet zijn op worden weergeven. Een aantal
 van de meest recente tweets worden weergeven met eventuele naam. Als er een tijd geen tweets zijn gepost wordt het
 weerbericht voor de plaats van het station weergeven.</p>
 
-<h2>3. Gedrag</h2>
+<h2 name="chap_3">3. Gedrag</h2>
 
-<h3>3.1 BPMN</h3>
+<h3 name="chap_3_1">3.1 BPMN</h3>
 
 ![BPMN diagram][bpmn]
 
-<h3>3.2 Use case</h3>
+<h3 name="chap_3_2">3.2 Use case</h3>
 
 Hieronder zie je een use case diagram met één systeem en twee actoren: Klan ten Moderator. Klant heeft een use case
 waarin diegene een bericht kan schrijven. Voor een moderator om iets te doen moet diegene eerst inloggen. Vervolgens kan
@@ -111,7 +111,7 @@ de moderator ervoor kiezen om het overzicht met geweigerde berichten te bekijken
 accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevoerd zijn.
 ![Use case diagram][ucd]
 
-<h3>3.3 Actor beschrijvingen</h3>
+<h3 name="chap_3_3">3.3 Actor beschrijvingen</h3>
 
 <table>
   <thead>
@@ -132,9 +132,9 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </tbody>
 </table> 
 
-<h3>3.4 Use case beschrijvingen</h3>
+<h3 name="chap_3_4">3.4 Use case beschrijvingen</h3>
 
-<h4>3.4.1 Proj a 01</h4>
+<h4 name="chap_3_4_1">3.4.1 Proj a 01</h4>
 
 <table>
   <body>
@@ -197,7 +197,7 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </body>
 </table>
 
-<h4>3.4.2 Proj a 02</h4>
+<h4 name="chap_3_4_2">3.4.2 Proj a 02</h4>
 
 <table>
   <body>
@@ -266,7 +266,7 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </body>
 </table>
 
-<h4>3.4.3 Proj a 03</h4>
+<h4 name="chap_3_4_3">3.4.3 Proj a 03</h4>
 
 <table>
   <body>
@@ -321,7 +321,7 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </body>
 </table>
 
-<h4>3.4.4 Proj a 04</h4>
+<h4 name="chap_3_4_4">3.4.4 Proj a 04</h4>
 
 <table>
   <body>
@@ -375,7 +375,7 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </body>
 </table>
 
-<h4>3.4.5 Proj a 05</h4>
+<h4 name="chap_3_4_5">3.4.5 Proj a 05</h4>
 
 <table>
   <body>
@@ -428,9 +428,9 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </body>
 </table>
 
-<h2>5. Datamodel</h2>
+<h2 name="chap_4">4. Datamodel</h2>
 
-<h3>5.1 Conceptueel datamodel</h3>
+<h3 name="chap_4_1">4.1 Conceptueel datamodel</h3>
 
 ![Conceptuele ERD][erd_conc]
 
@@ -457,11 +457,11 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </tbody>
 </table>
 
-<h3>5.2 Logisch datamodel</h3>
+<h3 name="chap_4_2">4.2 Logisch datamodel</h3>
 
 ![Logisch datamodel][erd_logic]
 
-<h3>5.3 Fysiek datamodel</h3>
+<h3 name="chap_4_3">4.3 Fysiek datamodel</h3>
 
 ![Fysiek datamodel][erd_phys]
 
