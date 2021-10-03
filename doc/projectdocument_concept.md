@@ -6,7 +6,7 @@
   <li>01/10/2021</li>
 </ul>
 
-<h2>Inhoudsopgave</h1>
+<h2 name="index">Inhoudsopgave</h1>
 
 <ul>
   <li>
@@ -66,6 +66,8 @@
 
 <h3 name="chap_1_5">1.5 *Leeswijzer</h3>
 
+<a href="index">Terug naar inhoudsopgave...</a>
+
 <h2 name="chap_2">2. Functionaliteit</h2>
 
 <p>Het systeem bestaat uit drie modules: computerzuil, moderatie, scherm. Deze modules zullen samenwerken samen met de API
@@ -96,6 +98,8 @@ geaccepteerd is wordt die met behulp van de twitter API getweet.</p>
 <p>Het scherm is een scherm op een NS-station waar de tweets die in module 2 getweet zijn op worden weergeven. Een aantal
 van de meest recente tweets worden weergeven met eventuele naam. Als er een tijd geen tweets zijn gepost wordt het
 weerbericht voor de plaats van het station weergeven.</p>
+
+<a href="index">Terug naar inhoudsopgave...</a>
 
 <h2 name="chap_3">3. Gedrag</h2>
 
@@ -428,6 +432,8 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
   </body>
 </table>
 
+<a href="index">Terug naar inhoudsopgave...</a>
+
 <h2 name="chap_4">4. Datamodel</h2>
 
 <h3 name="chap_4_1">4.1 Conceptueel datamodel</h3>
@@ -462,6 +468,8 @@ accepteren en weigeren. Hiervoor moet de use case van de actor klant wel uitgevo
 ![Logisch datamodel][erd_logic]
 
 <h3 name="chap_4_3">4.3 Fysiek datamodel</h3>
+
+<a href="index">Terug naar inhoudsopgave...</a>
 
 ![Fysiek datamodel][erd_phys]
 
