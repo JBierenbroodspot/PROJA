@@ -27,6 +27,7 @@ class Message(models.Model):
 
 class Station(models.Model):
     name: models.CharField = models.CharField(max_length=255, unique=True)
+    city: models.CharField = models.CharField(max_length=255)
 
     def __str__(self):
         return f"Station {self.name}"
