@@ -1,14 +1,51 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 
 {% block title %}
     {{ station.name }}
 {% endblock %}
 
+{% block headertext %}
+    Welkom op {{ station }}! Laat hier uw mening achter!
+{% endblock %}
+
 {% block content %}
-    <h3>Welkom op {{ station }}! Laat hier uw mening achter!</h3>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Verstuur">
-    </form>
+    <div class="container bg-white">
+        <div class="row">
+            <div class="">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    {{ form.message|add_label_class:"input-group-text h-100" }}
+                                </div>
+                                {{ form.message|add_class:"form-control" }}
+                            </div><br>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    {{ form.firstname|add_label_class:"input-group-text h-100" }}
+                                </div>
+                                {{ form.firstname|add_class:"form-control" }}
+                            </div><br>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    {{ form.insertion|add_label_class:"input-group-text h-100" }}
+                                </div>
+                                {{ form.insertion|add_class:"form-control" }}
+                            </div><br>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    {{ form.lastname|add_label_class:"input-group-text h-100" }}
+                                </div>
+                                {{ form.lastname|add_class:"form-control" }}
+                            </div><br>
+                            <button type="submit" class="btn btn-primary">Vesrturen</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
