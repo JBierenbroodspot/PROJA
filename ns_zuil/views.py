@@ -123,36 +123,61 @@ class ModeratorView(django.views.generic.edit.FormView):
 
 @method_decorator(login_required, name="dispatch")
 class DeniedView(django.views.generic.ListView):
+    """A ListView for displaying messages that have the status denied.
+    """
     model = models.Message
     queryset = models.Message.objects.filter(status="DENIED")
     template_name = "denied_messages_list.html"
 
 
 class DisplayView(django.views.generic.ListView):
+    """A ListView for displaying up to 10 of the most recent messages. The messages are retrieved by the station_id from
+    url.
+    """
     model = models.Message
     template_name = "display_list.html"
 
     def get_queryset(self) -> QuerySet:
+        """Gets a QuerySet of a Message model filtered on timedelta between now and DISPLAY_INTERVAL in .env file. Then
+        filtered on on station and ordered descending.
+
+        Returns:
+            QuerySet with applied filters.
+        """
         now: datetime.datetime = make_aware(datetime.datetime.now())
         queryset: QuerySet = self.model.objects.filter(
             moderation_datetime__range=[now - datetime.timedelta(hours=int(os.getenv("DISPLAY_INTERVAL"))), now],
             station_fk_id=self.kwargs["station_id"]
-        ).order_by("post_datetime")[:10]
+        ).order_by("-post_datetime")[:10]
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """Gets station from from get_station() and weather from get_weather_info() and adds it to the context dict.
+
+        Returns:
+            Context dict containing weather and station.
+        """
         context: dict[str, Any] = super(DisplayView, self).get_context_data(**kwargs)
         context["station"] = self.get_station()
         context["weather"] = self.get_weather_info()
         return context
 
     def get_weather_info(self) -> dict[str, Any]:
+        """Gets weather info from openweathermap api using information stored in .env file.
+
+        Returns:
+            Weather information in json format.
+        """
         url: str = f"http://api.openweathermap.org/data/2.5/weather?q={{}}&units=metric&appid={os.getenv('WEATHER_API_KEY')}"
         city: str = self.get_station().city
         weather: dict[str, Any] = requests.get(url.format(city)).json()
         return weather
 
-    def get_station(self):
+    def get_station(self) -> QuerySet:
+        """Gets station by getting station_id from the object instance's class.
+
+        Returns:
+            QuerySet containing the station with corresponding id.
+        """
         station: QuerySet = models.Station.objects.get(id=self.kwargs["station_id"])
         return station
-
