@@ -14,7 +14,14 @@
         {% endblock %}
     </head>
     <body>
-        {% block content %}
-        {% endblock %}
+        <header class="bg-primary text-center py-5 mb-4">
+             <div class="container">
+                <h1 class="fw-light text-white">{% block headertext %}{% endblock %}</h1>
+             </div>
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
     </body>
 </html>

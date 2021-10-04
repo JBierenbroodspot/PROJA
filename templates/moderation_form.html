@@ -1,19 +1,49 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block head %}
+    <style>
+    body {
+        background: #ffffff!important;
+        background: linear-gradient(to right, #fff, #fff)!important;
+    }
+    </style>
+{% endblock %}
+
+{% block headertext %}
+    {% if message %}
+        Modereren
+    {% else %}
+        Er zijn op dit moment geen berichten om te modereren, kom later terug!
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     {% if message %}
-        <ul>
-            <li>{{ message.fullname }} @{{ message.station_fk }}</li>
-            <li>{{ message.message }}</li>
-            <li>{{ message.post_datetime }}</li>
-        </ul>
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Oké">
-        </form>
-    {% else %}
-        <h1>Er zijn op dit moment geen berichten om te modereren, kom later terug!</h1>
+        <div class="container bg-white">
+            <div class="row">
+                <div class="">
+                    <div class="card border-0 shadow">
+                        <div class="card-body">
+                            <h5 class="card-title mb-0">{{ message.fullname }} @{{ message.station_fk }}</h5>
+                            <div class="card-text text-black-50">{{ message.message }}</div><br>
+                            <div class="card-text text-black-50">{{ message.post_datetime }}</div>
+                            <hr>
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        {{ form.status.label_tag }}
+                                    </div>
+                                    {{ form.status }}
+                                </div>
+                                <input type="submit" value="Oké">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
-    <a href="{% url 'denied' %}">Naar geweigerde berichten.</a>
+    <br><a href="{% url 'denied' %}">Naar geweigerde berichten.</a>
 {% endblock %}
