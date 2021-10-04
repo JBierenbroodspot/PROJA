@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ns_zuil.apps.NsZuilConfig',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
