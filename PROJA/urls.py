@@ -28,4 +28,4 @@ urlpatterns = [
     path("moderate/denied-messages", views.DeniedView.as_view(), name="denied"),
     path("display/<int:station_id>", views.DisplayView.as_view(), name="display"),
     path("", include("django.contrib.auth.urls")),
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
