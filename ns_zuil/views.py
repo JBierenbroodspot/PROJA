@@ -1,4 +1,5 @@
 import datetime
+import os
 from typing import Any
 
 import django.views
@@ -124,3 +125,21 @@ class DeniedView(django.views.generic.ListView):
     model = models.Message
     queryset = models.Message.objects.filter(status="DENIED")
     template_name = "denied_messages_list.html"
+
+
+class DisplayView(django.views.generic.ListView):
+    model = models.Message
+    template_name = "display_list.html"
+
+    def get_queryset(self) -> QuerySet:
+        now: datetime.datetime = make_aware(datetime.datetime.now())
+        queryset: QuerySet = self.model.objects.filter(
+            moderation_datetime__range=[now - datetime.timedelta(hours=int(os.getenv("DISPLAY_INTERVAL"))), now],
+            station_fk_id=self.kwargs["station_id"]
+        )
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context: dict[str, Any] = super(DisplayView, self).get_context_data(**kwargs)
+        context["station"] = models.Station.objects.get(id=self.kwargs["station_id"])
+        return context

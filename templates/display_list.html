@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Welcome op {{ station }}!
+{% endblock %}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>Naam</th>
+                <th>Bericht</th>
+                <th>Station</th>
+                <th>Geplaats op</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for message in object_list %}
+                <tr>
+                    <td>{{ message.fullname }}</td>
+                    <td>{{ message.message }}</td>
+                    <td>{{ message.station_fk }}</td>
+                    <td>{{ message.post_datetime }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
