@@ -137,7 +137,7 @@ class DisplayView(django.views.generic.ListView):
         queryset: QuerySet = self.model.objects.filter(
             moderation_datetime__range=[now - datetime.timedelta(hours=int(os.getenv("DISPLAY_INTERVAL"))), now],
             station_fk_id=self.kwargs["station_id"]
-        )
+        )[:10]
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:

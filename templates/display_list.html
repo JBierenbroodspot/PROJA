@@ -1,35 +1,41 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Welcome op {{ station }}!
+    Welkom op {{ station }}!
+{% endblock %}
+
+{% block headertext %}
+    Welkom op {{ station }}!
 {% endblock %}
 
 {% block content %}
-    {% if object_list %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Naam</th>
-                    <th>Bericht</th>
-                    <th>Station</th>
-                    <th>Geplaats op</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for message in object_list %}
-                    <tr>
-                        <td>{{ message.fullname }}</td>
-                        <td>{{ message.message }}</td>
-                        <td>{{ message.station_fk }}</td>
-                        <td>{{ message.post_datetime }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>{{ weather.weather.0.main }}</p>
-        <p>{{ weather.weather.0.description }}</p>
-        <p>{{ weather.main.temp }}</p>
-        <p>{{ weather.main.feels_like }}</p>
-    {% endif %}
+    <div class="container bg-white">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card border-0">
+                    <div class="card-body shadow" style="border-radius: 25px">
+                        {% if object_list %}
+                            {% for message in object_list %}
+                                <p class="text-primary"><strong>{{ message.fullname }} @{{ message.station_fk }}</strong></p>
+                                <p>{{ message.message }}</p>
+                                <p>{{ message.post_datetime }}</p>
+                            {% endfor %}
+                        {% else %}
+                            <div class="d-flex justify-content-between pb-2">
+                                <div>
+                                    <h2 class="display-2"><strong>{{ weather.main.temp|floatformat:1 }}°C</strong></h2>
+                                    <p class="text-muted mb-0">{{ weather.main.feels_like|floatformat:1 }}</p>
+                                    <p class="text-muted mb-0">{{ weather.weather.0.main }}</p>
+                                    <p class="mb-0">{{ station.city }}</p>
+                                </div>
+                                <div>
+                                    <img src="http://openweathermap.org/img/wn/{{ weather.weather.0.icon }}@2x.png" width="150px">
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
