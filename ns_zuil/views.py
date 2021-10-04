@@ -3,6 +3,7 @@ import os
 from typing import Any
 
 import django.views
+import requests
 from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
 from django.http import HttpResponseRedirect
@@ -141,5 +142,17 @@ class DisplayView(django.views.generic.ListView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context: dict[str, Any] = super(DisplayView, self).get_context_data(**kwargs)
-        context["station"] = models.Station.objects.get(id=self.kwargs["station_id"])
+        context["station"] = self.get_station()
+        context["weather"] = self.get_weather_info()
         return context
+
+    def get_weather_info(self) -> dict[str, Any]:
+        url: str = f"http://api.openweathermap.org/data/2.5/weather?q={{}}&appid={os.getenv('WEATHER_API_KEY')}"
+        city: str = self.get_station().city
+        weather: dict[str, Any] = requests.get(url.format(city)).json()
+        return weather
+
+    def get_station(self):
+        station: QuerySet = models.Station.objects.get(id=self.kwargs["station_id"])
+        return station
+
