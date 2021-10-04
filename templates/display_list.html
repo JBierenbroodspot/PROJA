@@ -27,6 +27,9 @@
             </tbody>
         </table>
     {% else %}
-        <p>{{ weather }}</p>
+        <p>{{ weather.weather.0.main }}</p>
+        <p>{{ weather.weather.0.description }}</p>
+        <p>{{ weather.main.temp }}</p>
+        <p>{{ weather.main.feels_like }}</p>
     {% endif %}
 {% endblock %}
