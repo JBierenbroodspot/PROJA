@@ -112,13 +112,24 @@ class ModeratorView(django.views.generic.edit.FormView):
             Redirect to the same url with a clean form.
         """
         cleaned: dict[Any] = form.cleaned_data
+        self.update_message(cleaned)
+        self.success_url = self.request.path_info
+        return super().form_valid(form)
+
+    def update_message(self, data: dict[Any]) -> None:
+        """Updates Message model gathered from form data.
+
+        Args:
+            data: Dictionary containg form data needed to update mMessage model
+
+        Returns:
+            None
+        """
         message: models.Message = self.get_context_data()["message"]
-        message.status = cleaned["status"]
+        message.status = data["status"]
         message.moderation_datetime = make_aware(datetime.datetime.now())
         message.moderated_by_fk = self.request.user
         message.save()
-        self.success_url = self.request.path_info
-        return super().form_valid(form)
 
 
 @method_decorator(login_required, name="dispatch")
