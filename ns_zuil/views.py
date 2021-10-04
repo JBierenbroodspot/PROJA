@@ -147,7 +147,7 @@ class DisplayView(django.views.generic.ListView):
         return context
 
     def get_weather_info(self) -> dict[str, Any]:
-        url: str = f"http://api.openweathermap.org/data/2.5/weather?q={{}}&appid={os.getenv('WEATHER_API_KEY')}"
+        url: str = f"http://api.openweathermap.org/data/2.5/weather?q={{}}&units=metric&appid={os.getenv('WEATHER_API_KEY')}"
         city: str = self.get_station().city
         weather: dict[str, Any] = requests.get(url.format(city)).json()
         return weather
