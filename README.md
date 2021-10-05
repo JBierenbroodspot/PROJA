@@ -69,3 +69,17 @@ You can create a superuser using the `manage.py createsuperuser` command.
 ## Start
 
 After everything is set up correctly you can start the server by using `manage.py runserver`.
+
+# Project
+
+The project has the following urls to visit:
+
+| url | name | template | view | description |
+| --- | --- | --- | --- | --- |
+| /station/ | choose_station | select_station_form.html | ChooseStationView | This page is used to select a station from the Station model to visit. This page does not have to be  used and exists purely for ease of development. |
+| /station/[int:station_id] | message | message_form.html | MessageView | This page contains a form where users can enter a message containing 140 characters. The station_id parameter in the url corresponds to an id from the Station model. |
+| /moderate/ | moderate | moderation_form.html | ModeratorView | This page displays a single message which can be either accepted or denied using a form. The status in the Message model will be set accordingly. The next message will be displayed until there are no more messages. |
+| /moderate/denied-messages/ | denied | denied_messages_list.html | DeniedView | This displays a list of all denied messages. |
+| /display/[int:station_id] | display | display_list.html | DisplayView | This displays 10 most recently approved messages at a station defined in the url parameter station_id. If there are no recent messages the current weather will be displayed. |
+| /admin/ |  |  |  | Administrators can use this to add users and to modify and create database entries. |
+| /login/ |  | login.html |  | Moderators and administrators can use this page to login to be able to access moderation pages. |
