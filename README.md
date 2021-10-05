@@ -55,3 +55,13 @@ WEATHER_API_KEY=
 ## Requirements
 
 To install requirements run the following command: `pip install -r requirements.txt`
+
+## Migrations
+
+Once everything before here is set up, run the following commands:
+* `manage.py makemigrations`
+* `manage.py migrate`
+
+## Start
+
+After everything is set up correctly you can start the server by using `manage.py runserver`.
