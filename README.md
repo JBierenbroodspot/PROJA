@@ -62,6 +62,10 @@ Once everything before here is set up, run the following commands:
 * `manage.py makemigrations`
 * `manage.py migrate`
 
+## Superuser
+
+You can create a superuser using the `manage.py createsuperuser` command.
+
 ## Start
 
 After everything is set up correctly you can start the server by using `manage.py runserver`.
