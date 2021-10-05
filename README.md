@@ -51,3 +51,7 @@ DJANGO_SECRET=django-insecure-5xt#&&57ek%9+u5d5!crr^um3mpmpz(h*%()73qw+dxn6+31$t
 DISPLAY_INTERVAL=2
 WEATHER_API_KEY=
 ```
+
+## Requirements
+
+To install requirements run the following command: `pip install -r requirements.txt`
