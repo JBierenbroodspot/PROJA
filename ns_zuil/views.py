@@ -4,9 +4,10 @@ from typing import Any
 
 import django.views
 import requests
+from TwitterAPI import TwitterAPI, TwitterResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.decorators import method_decorator
 from django.utils.timezone import make_aware
 
@@ -89,6 +90,8 @@ class ChooseStationView(django.views.generic.edit.FormView):
 class ModeratorView(django.views.generic.edit.FormView):
     """A FormView for modifying a Message object with data gathered from a ModerationForm.
     """
+    message: models.Message = None
+
     template_name = "moderation_form.html"
     form_class = forms.ModerationForm
 
@@ -111,8 +114,10 @@ class ModeratorView(django.views.generic.edit.FormView):
         Returns:
             Redirect to the same url with a clean form.
         """
+        self.message = self.get_context_data()["message"]
         cleaned: dict[Any] = form.cleaned_data
         self.update_message(cleaned)
+        self.tweet_message()
         self.success_url = self.request.path_info
         return super().form_valid(form)
 
@@ -125,11 +130,22 @@ class ModeratorView(django.views.generic.edit.FormView):
         Returns:
             None
         """
-        message: models.Message = self.get_context_data()["message"]
-        message.status = data["status"]
-        message.moderation_datetime = make_aware(datetime.datetime.now())
-        message.moderated_by_fk = self.request.user
-        message.save()
+        self.message.status = data["status"]
+        self.message.moderation_datetime = make_aware(datetime.datetime.now())
+        self.message.moderated_by_fk = self.request.user
+        self.message.save()
+
+    def build_tweet(self) -> str:
+        tweet: str = f"{self.message.fullname} op {self.message.station_fk} zegt:\n{self.message.message}"
+        return tweet
+
+    def tweet_message(self) -> Any:
+        api: TwitterAPI = TwitterAPI(os.getenv("TWITTER_API"),
+                                     os.getenv("TWITTER_SECRET"),
+                                     os.getenv("TWITTER_ACCESS_TOKEN"),
+                                     os.getenv("TWITTER_ACCESS_TOKEN_SECRET"))
+        response: TwitterResponse = api.request("statuses/update", {"status": self.build_tweet()})
+        return response.status_code
 
 
 @method_decorator(login_required, name="dispatch")
