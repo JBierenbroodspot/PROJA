@@ -22,7 +22,10 @@ class Message(models.Model):
 
     @property
     def fullname(self):
-        return " ".join(map(str, [self.firstname, self.insertion, self.lastname]))
+        if self.insertion:
+            return " ".join(map(str, [self.firstname, self.insertion, self.lastname]))
+        else:
+            return " ".join(map(str, [self.firstname, self.lastname]))
 
 
 class Station(models.Model):
