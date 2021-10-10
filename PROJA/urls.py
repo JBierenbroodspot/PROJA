@@ -27,5 +27,6 @@ urlpatterns = [
     path("moderate/", views.ModeratorView.as_view(), name="moderate"),
     path("moderate/denied-messages", views.DeniedView.as_view(), name="denied"),
     path("display/<int:station_id>", views.DisplayView.as_view(), name="display"),
+    path("display/<int:station_id>/tweets", views.TweetView.as_view(), name="tweets"),
     path("", include("django.contrib.auth.urls")),
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

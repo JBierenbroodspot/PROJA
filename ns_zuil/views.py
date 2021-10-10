@@ -1,5 +1,6 @@
 import datetime
 import os
+import urllib.parse
 from typing import Any
 
 import django.views
@@ -208,3 +209,53 @@ class DisplayView(django.views.generic.ListView):
         """
         station: QuerySet = models.Station.objects.get(id=self.kwargs["station_id"])
         return station
+
+
+class TweetView(django.views.generic.TemplateView):
+    template_name = "display_list.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context: dict[str, Any] = super(TweetView, self).get_context_data(**kwargs)
+        context["station"] = self.get_station()
+        context["tweets"] = self.get_tweets()
+        context["weather"] = self.get_weather_info()
+        return context
+
+    def get_weather_info(self) -> dict[str, Any]:
+        """Gets weather info from openweathermap api using information stored in .env file.
+
+        Returns:
+            Weather information in json format.
+        """
+        api_key: str = os.getenv('WEATHER_API_KEY')
+        url: str = f"http://api.openweathermap.org/data/2.5/weather?q={{}}&units=metric&appid={api_key}"
+        city: str = self.get_station().city
+        weather: dict[str, Any] = requests.get(url.format(city)).json()
+        return weather
+
+    def get_station(self) -> QuerySet:
+        """Gets station by getting station_id from the object instance's class.
+
+        Returns:
+            QuerySet containing the station with corresponding id.
+        """
+        station: QuerySet = models.Station.objects.get(id=self.kwargs["station_id"])
+        return station
+
+    @staticmethod
+    def get_tweets() -> list[str]:
+        api: TwitterAPI = TwitterAPI(os.getenv("TWITTER_API"),
+                                     os.getenv("TWITTER_SECRET"),
+                                     os.getenv("TWITTER_ACCESS_TOKEN"),
+                                     os.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
+                                     api_version="2")
+        tweets: list[str] = []
+        data: dict[str, Any] = {}
+        user_id: str = os.getenv("TWITTER_USER")
+        status: TwitterResponse = api.request(f"users/:{user_id}/tweets", data).json()["data"]
+        for tweet in status:
+            tweet_url: str = urllib.parse.quote(f"https://twitter.com/{user_id}/status/{tweet['id']}", safe="")
+            embed_tweet = requests.get(f"https://publish.twitter.com/oembed?url={tweet_url}")
+            if embed_tweet.status_code == 200:
+                tweets.append(embed_tweet.json()["html"])
+        return tweets
