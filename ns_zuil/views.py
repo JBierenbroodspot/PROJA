@@ -41,7 +41,7 @@ class MessageView(django.views.generic.edit.FormView):
 
         Args:
             form: A forms.MessageForm instance with it's datafields filled. This argument is passed by the class' post()
-            function.
+            method.
 
         Returns:
             A super call to parent form_valid which will return a redirect to self.success_url.
@@ -62,12 +62,11 @@ class MessageView(django.views.generic.edit.FormView):
 
         Returns:
             None.
-
-        Author note: This method should actually catch exceptions but it is very hard to find all possible errors
-        that can be thrown. Furthermore is the process relatively safe because the form cannot post data that is not
-        handleable by the database. If exceptions can be caught however, this method could actually return a
-        meaningful value measuring whether the database insert was successful or not.
         """
+        # Author note: This method should actually catch exceptions but it is very hard to find all possible errors
+        # that can be thrown. Furthermore is the process relatively safe because the form cannot post data that is not
+        # handleable by the database. If exceptions can be caught however, this method could actually return a
+        # meaningful value measuring whether the database insert was successful or not.
         models.Message(message=data["message"],
                        firstname=data["firstname"],
                        insertion=data["insertion"],
