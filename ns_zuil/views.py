@@ -255,7 +255,7 @@ class TweetView(django.views.generic.TemplateView):
         status: TwitterResponse = api.request(f"users/:{user_id}/tweets", data).json()["data"]
         for tweet in status:
             tweet_url: str = urllib.parse.quote(f"https://twitter.com/{user_id}/status/{tweet['id']}", safe="")
-            embed_tweet = requests.get(f"https://publish.twitter.com/oembed?url={tweet_url}")
+            embed_tweet = requests.get(f"https://publish.twitter.com/oembed?url={tweet_url}&dnt=false")
             if embed_tweet.status_code == 200:
                 tweets.append(embed_tweet.json()["html"])
         return tweets
