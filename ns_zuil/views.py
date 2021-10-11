@@ -121,23 +121,27 @@ class ModeratorView(django.views.generic.edit.FormView):
     form_class = forms.ModerationForm
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        """Inserts the first Message object with the status PENDING into the context dict.
+        """Inserts the first models.Message instance with the status == PENDING into the context dictionary. This way
+        the template provided by self.template_name can access the information within the Message object.
 
         Returns:
-            Context dict containing a Message object.
+            A dictionary containing all context data that has been inherited from the parent class together with the
+            new information from the models.Message object.
         """
         context: dict[str, Any] = super(ModeratorView, self).get_context_data(**kwargs)
         context["message"] = models.Message.objects.filter(status="PENDING").first()
         return context
 
     def form_valid(self, form: forms.ModerationForm) -> HttpResponseRedirect:
-        """Updates and saves a Message object.
+        """Converts data supplied by form into a dictionary using cleaned_data. The cleaned data will be passed to
+        self.update_message and finally self.success_url will be set to return user to the same page containing a clean
+        form.
 
-        Args:
-            form: A ModerationForm containing information about the status for an Message object.
+        Args: form: A forms.ModerationForm instance with it's datafields filled. This argument is passed by the
+        class' post() method.
 
         Returns:
-            Redirect to the same url with a clean form.
+            A super call to parent form_valid which will return a redirect to self.success_url.
         """
         cleaned: dict[Any] = form.cleaned_data
         self.update_message(cleaned)
@@ -145,16 +149,18 @@ class ModeratorView(django.views.generic.edit.FormView):
         return super().form_valid(form)
 
     def update_message(self, data: dict[Any]) -> None:
-        """Updates Message model gathered from form data.
+        """Updates a models.Message instance using the dictionary data together with the current time and current user.
 
         Args:
-            data: Dictionary containg form data needed to update mMessage model
+            data:A dictionary containing the key status.
 
         Returns:
-            None
+            None.
         """
+        # Author note: See author note MessageView.create_message.
         message: models.Message = self.get_context_data()["message"]
         message.status = data["status"]
+        # make_aware makes the datetime instance aware of what timezone it is.
         message.moderation_datetime = make_aware(datetime.datetime.now())
         message.moderated_by_fk = self.request.user
         message.save()
