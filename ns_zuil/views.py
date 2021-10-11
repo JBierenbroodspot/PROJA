@@ -48,6 +48,14 @@ class MessageView(django.views.generic.edit.FormView):
                        ).save()
         return super().form_valid(form)
 
+    def create_message(self, data: dict[Any]) -> None:
+        models.Message(message=data["message"],
+                       firstname=data["firstname"],
+                       insertion=data["insertion"],
+                       lastname=data["lastname"],
+                       station_fk_id=self.get_context_data()["station"].id
+                       ).save()
+
     @staticmethod
     def clean(form: forms.MessageForm) -> dict[Any]:
         """Cleans a MessageForm using cleaned_data. Changes empty first and lastname fields into the their defaults.
