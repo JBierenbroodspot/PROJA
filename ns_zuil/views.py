@@ -91,22 +91,22 @@ class MessageView(django.views.generic.edit.FormView):
 
 
 class ChooseStationView(django.views.generic.edit.FormView):
-    """A FormView for redirecting to a page associated with a Station object.
+    """A FormView that displays all Station instances in a form.
 
-    This feature is for development purposes only and should be removed from a production environment.
+    Author note:
+        This feature is for development purposes only and should be removed from a production environment.
     """
     template_name = "select_station_form.html"
     form_class = forms.StationForm
 
     def form_valid(self, form: forms.StationForm) -> HttpResponseRedirect:
-        """Redirects to page selected in a StationForm.
+        """Gets the primary key of the Station instance provided by the form, which has been cleaned using
+        cleaned_data. Then it sets the success_url to that primary key.
 
         Returns:
-            Redirect to page selected in the form.
+            A super call to parent form_valid which returns a redirect to success_url.
         """
         cleaned: dict[Any] = form.cleaned_data
-        # TODO(Jbierenbroodspot): Find out what this does and if it's necessary.
-        self.get_context_data()["station_id"] = cleaned["station"].pk
         self.success_url = str(cleaned["station"].pk)
         return super().form_valid(form)
 
