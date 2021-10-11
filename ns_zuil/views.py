@@ -168,7 +168,8 @@ class ModeratorView(django.views.generic.edit.FormView):
 
 @method_decorator(login_required, name="dispatch")
 class DeniedView(django.views.generic.ListView):
-    """A ListView for displaying messages that have the status denied.
+    """A ListView that gets all models.Message instances with the status DENIED and makes them available for the
+    template defined in template_name.
     """
     model = models.Message
     queryset = models.Message.objects.filter(status="DENIED")
