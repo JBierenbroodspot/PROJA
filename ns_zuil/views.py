@@ -14,41 +14,60 @@ from ns_zuil import models, forms
 
 
 class MessageView(django.views.generic.edit.FormView):
-    """A FormView for inserting form data from a MessageForm into a Message model.
+    """A FormView that overwrites form_valid to create models.Message object.
     """
     template_name = "message_form.html"
     form_class = forms.MessageForm
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        """Inserts a Station object with corresponding ID from url into the context dict.
+        """Inserts a models.Station instance with the same id that has been provided in the url using self.kwargs
+        into the context dictionary. This way the template provided by self.template_name can access the information
+        within the Station object.
 
         Returns:
-            Context dict with a Station object inserted.
+            A dictionary containing all context data that has been inherited from the parent class together with the
+            new information from the models.Station object.
         """
+        # Super calls executes the function that is called.
         context: dict[Any] = super(MessageView, self).get_context_data(**kwargs)
+        # When a the url is defined like <int:station_id> the value will be stored in self.kwargs.
         context["station"] = models.Station.objects.get(id=int(self.kwargs["station_id"]))
         return context
 
     def form_valid(self, form: forms.MessageForm) -> HttpResponseRedirect:
-        """Creates and saves a Message object.
+        """Converts data supplied by form into a dictionary using clean(form). The cleaned data will be passed to
+        self.create_message and finally self.success_url will be set to return user to the same page containing a clean
+        form.
 
         Args:
-            form: A MessageForm containing information for creating a Message object.
+            form: A forms.MessageForm instance with it's datafields filled. This argument is passed by the class' post()
+            function.
 
         Returns:
-            Redirect to the same url with a clean form.
+            A super call to parent form_valid which will return a redirect to self.success_url.
         """
         cleaned: dict[Any] = self.clean(form)
-        self.success_url = self.request.path_info  # Get current url
-        models.Message(message=cleaned["message"],
-                       firstname=cleaned["firstname"],
-                       insertion=cleaned["insertion"],
-                       lastname=cleaned["lastname"],
-                       station_fk_id=self.get_context_data()["station"].id
-                       ).save()
+        self.create_message(cleaned)
+
+        # Retrieves url of the current page.
+        self.success_url = self.request.path_info
         return super().form_valid(form)
 
     def create_message(self, data: dict[Any]) -> None:
+        """Creates a models.Message instance using the dictionary data. The only key that is not optional in data is
+        data["message"].
+
+        Args:
+            data:A dictionary containing the keys (message, firtsname, insertion, lastname).
+
+        Returns:
+            None.
+
+        Author note: This method should actually catch exceptions but it is very hard to find all possible errors
+        that can be thrown. Furthermore is the process relatively safe because the form cannot post data that is not
+        handleable by the database. If exceptions can be caught however, this method could actually return a
+        meaningful value measuring whether the database insert was successful or not.
+        """
         models.Message(message=data["message"],
                        firstname=data["firstname"],
                        insertion=data["insertion"],
@@ -58,10 +77,11 @@ class MessageView(django.views.generic.edit.FormView):
 
     @staticmethod
     def clean(form: forms.MessageForm) -> dict[Any]:
-        """Cleans a MessageForm using cleaned_data. Changes empty first and lastname fields into the their defaults.
+        """Cleans data provided by a messageForm using form.cleaned_data and then makes sure firstname and lastname are
+        not null. If they are a default value will be supplied.
 
         Returns:
-            Dict containing clean an non-empty data.
+            A dictionary containing containing form data.
         """
         cleaned: dict[Any] = form.cleaned_data
         if cleaned["firstname"] == "" and cleaned["lastname"] == "":
