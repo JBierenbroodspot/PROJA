@@ -176,6 +176,8 @@ class ModeratorView(django.views.generic.edit.FormView):
             String in the format of: '[fullname] op [station] zegt: [message].
         """
         tweet: str = f"{self.message.fullname} op {self.message.station_fk} zegt:\n{self.message.message}"
+        if len(tweet) > 280:
+            tweet = tweet[:279]
         return tweet
 
     def tweet_message(self) -> int:
