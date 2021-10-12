@@ -9,9 +9,9 @@ class StationForm(forms.Form):
 
 class MessageForm(forms.Form):
     message = forms.CharField(max_length=140, widget=forms.Textarea(attrs={"rows": 4}))
-    firstname = forms.CharField(max_length=255, required=False)
-    insertion = forms.CharField(max_length=255, required=False)
-    lastname = forms.CharField(max_length=255, required=False)
+    firstname = forms.CharField(max_length=30, required=False)
+    insertion = forms.CharField(max_length=15, required=False)
+    lastname = forms.CharField(max_length=30, required=False)
 
 
 class ModerationForm(forms.Form):
