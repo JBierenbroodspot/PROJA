@@ -1,7 +1,7 @@
 import datetime
 import os
 import urllib.parse
-from typing import Any
+from typing import Any, Union
 
 import django.views
 import requests
@@ -148,7 +148,8 @@ class ModeratorView(django.views.generic.edit.FormView):
         self.message = self.get_context_data()["message"]
         cleaned: dict[Any] = form.cleaned_data
         self.update_message(cleaned)
-        self.tweet_message()
+        if cleaned["status"] == "APPROVED":
+            self.tweet_message()
         self.success_url = self.request.path_info
         return super().form_valid(form)
 
@@ -219,7 +220,7 @@ class DisplayView(django.views.generic.ListView):
         """
         now: datetime.datetime = make_aware(datetime.datetime.now())
         queryset: QuerySet = self.model.objects.filter(
-            moderation_datetime__range=[now - datetime.timedelta(hours=int(os.getenv("DISPLAY_INTERVAL"))), now],
+            moderation_datetime__range=[now - datetime.timedelta(hours=float(os.getenv("DISPLAY_INTERVAL"))), now],
             station_fk_id=self.kwargs["station_id"]
         ).order_by("-post_datetime")[:10]  # The - in front of the field name means that it is ordered descending.
         return queryset
@@ -311,20 +312,32 @@ class TweetView(django.views.generic.TemplateView):
         using these tweet id's. These tweets will be passed to self.get_html_from_twitter_status and a list
         containing html for every tweet will be returned.
 
-        Returns:
-            A list containing html code of tweets posted by a specific user in a specific time range.
+        Returns: A list containing html code of tweets posted by a specific user in a specific time range and an
+        empty list if there are no tweets.
         """
         api: TwitterAPI = TwitterAPI(os.getenv("TWITTER_API"),
                                      os.getenv("TWITTER_SECRET"),
                                      os.getenv("TWITTER_ACCESS_TOKEN"),
                                      os.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
                                      api_version="2")
-        data: dict[str, Any] = {}
+        # Gets a timezone aware version of datetime.now.
+        now: datetime.datetime = make_aware(datetime.datetime.now())
+        # Subtracts now - DISPLAY_INTERVAL from now.
+        start_time: datetime.datetime = now - datetime.timedelta(hours=float(os.getenv("DISPLAY_INTERVAL")))
+        # Removes microseconds because they are not supported by Twitter.
+        start_time.replace(microsecond=0)
+        # Data dictionary will be passed as a parameter.
+        data: dict[str, Any] = {
+            "start_time": start_time.isoformat(),
+        }
         user_id: str = os.getenv("TWITTER_USER")
         # This will send a request to the users/:id/tweets resource of the Twitter API and it will return a list of the
         # id's of tweets posted by this user.
-        status: TwitterResponse = api.request(f"users/:{user_id}/tweets", data).json()["data"]
-        return self.get_html_from_twitter_status(status)
+        try:
+            status: TwitterResponse = api.request(f"users/:{user_id}/tweets", data).json()["data"]
+            return self.get_html_from_twitter_status(status)
+        except KeyError as e:
+            return []
 
     @staticmethod
     def get_html_from_twitter_status(status: TwitterResponse) -> list[str]:
