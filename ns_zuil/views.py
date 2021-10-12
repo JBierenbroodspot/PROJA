@@ -8,7 +8,7 @@ import requests
 from TwitterAPI import TwitterAPI, TwitterResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.utils.timezone import make_aware
 
@@ -93,9 +93,6 @@ class MessageView(django.views.generic.edit.FormView):
 
 class ChooseStationView(django.views.generic.edit.FormView):
     """A FormView that displays all Station instances in a form.
-
-    Author note:
-        This feature is for development purposes only and should be removed from a production environment.
     """
     # Author note: This feature is for development purposes only and should be removed from a production environment.
     template_name = "select_station_form.html"
@@ -255,9 +252,21 @@ class DisplayView(django.views.generic.ListView):
 
 
 class TweetView(django.views.generic.TemplateView):
+    """A TemplateView that utilizes the TwitterAPI to display up to 10 of the mose recent Tweets tweeted by
+    ModeratorView on the template defined in self.template_name.
+    """
     template_name = "display_list.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        """Gets station from from get_station(), weather from get_weather_info() and tweets in the form of html code.
+        These are inserted into the context dictionary. This way the template provided by self.template_name can
+        access the information within the Message object.
+
+        Returns:
+            A dictionary containing all context data that has been inherited from the parent class together with
+            the gathered from the url using self.kwargs, weather info for the city provided by the models.Station
+            instance and html-ready tweets.
+        """
         context: dict[str, Any] = super(TweetView, self).get_context_data(**kwargs)
         context["station"] = self.get_station()
         context["tweets"] = self.get_tweets()
@@ -265,10 +274,11 @@ class TweetView(django.views.generic.TemplateView):
         return context
 
     def get_weather_info(self) -> dict[str, Any]:
-        """Gets weather info from openweathermap api using information stored in .env file.
+        """Gets weather info from openweathermap api by retrieving the api key from a .env file. A request will be
+        sent with the city field from a models.Station object as a parameter.
 
         Returns:
-            Weather information in json format.
+            A dictionary containing the weather information in json format.
         """
         api_key: str = os.getenv('WEATHER_API_KEY')
         url: str = f"http://api.openweathermap.org/data/2.5/weather?q={{}}&units=metric&appid={api_key}"
@@ -277,28 +287,57 @@ class TweetView(django.views.generic.TemplateView):
         return weather
 
     def get_station(self) -> QuerySet:
-        """Gets station by getting station_id from the object instance's class.
+        """Gets a models.Station instance with the same id provided by the url using self.kwargs.
 
         Returns:
-            QuerySet containing the station with corresponding id.
+            QuerySet containing a models.Station instance.
         """
         station: QuerySet = models.Station.objects.get(id=self.kwargs["station_id"])
         return station
 
-    @staticmethod
-    def get_tweets() -> list[str]:
+    def get_tweets(self) -> list[str]:
+        """Initializes a v2 TwitterAPI to retrieve tweet id's from TWITTER_USER defined in .env. A url will be built
+        using these tweet id's. These tweets will be passed to self.get_html_from_twitter_status and a list
+        containing html for every tweet will be returned.
+
+        Returns:
+            A list containing html code of tweets posted by a specific user in a specific time range.
+        """
         api: TwitterAPI = TwitterAPI(os.getenv("TWITTER_API"),
                                      os.getenv("TWITTER_SECRET"),
                                      os.getenv("TWITTER_ACCESS_TOKEN"),
                                      os.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
                                      api_version="2")
-        tweets: list[str] = []
         data: dict[str, Any] = {}
         user_id: str = os.getenv("TWITTER_USER")
+        # This will send a request to the users/:id/tweets resource of the Twitter API and it will return a list of the
+        # id's of tweets posted by this user.
         status: TwitterResponse = api.request(f"users/:{user_id}/tweets", data).json()["data"]
+        return self.get_html_from_twitter_status(status)
+
+    @staticmethod
+    def get_html_from_twitter_status(status: TwitterResponse) -> list[str]:
+        """Takes the id's out of a TwitterResponse containing a status and sends a request to publish.twitter's
+        oembed resource with a link to the tweet for every tweet in the status. Then it will filter for the html code
+        and adds it to a list.
+
+        Args:
+            status: A TwitterResponse object containing a list of statuses and their id's.
+
+        Returns:
+            A list containing html-code which can be directly pasted into a template.
+        """
+        html: list[str] = []
         for tweet in status:
-            tweet_url: str = urllib.parse.quote(f"https://twitter.com/{user_id}/status/{tweet['id']}", safe="")
-            embed_tweet = requests.get(f"https://publish.twitter.com/oembed?url={tweet_url}&dnt=false")
+            # urllib.parse.quote here turns the link into url-safe syntax. The save argument '/' by default,
+            # by setting this to '' slashes will also be turned into url-save syntax. The 'user' part in the url
+            # should be the twitter handle of the person who tweeted the tweet but the oembed api automatically
+            # corrects it based on the tweet id.
+            tweet_url: str = urllib.parse.quote(f"https://twitter.com/user/status/{tweet['id']}", safe="")
+            # Sends a request using requests to the publis.twitter oembed resource. This will return some metadata
+            # and html code to build the tweet. With the 'dnt' parameter set to true Twitter will not use this
+            # timeline for personalized ad purposes.
+            embed_tweet = requests.get(f"https://publish.twitter.com/oembed?url={tweet_url}&dnt=true")
             if embed_tweet.status_code == 200:
-                tweets.append(embed_tweet.json()["html"])
-        return tweets
+                html.append(embed_tweet.json()["html"])
+        return html
