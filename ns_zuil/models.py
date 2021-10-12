@@ -4,9 +4,9 @@ from django.db import models
 
 class Message(models.Model):
     message: models.CharField = models.CharField(max_length=140)
-    firstname: models.CharField = models.CharField(max_length=255, default="A.")
-    insertion: models.CharField = models.CharField(max_length=255, blank=True, null=True)
-    lastname: models.CharField = models.CharField(max_length=255, default="Noniem")
+    firstname: models.CharField = models.CharField(max_length=25, default="A.")
+    insertion: models.CharField = models.CharField(max_length=25, blank=True, null=True)
+    lastname: models.CharField = models.CharField(max_length=25, default="Noniem")
     post_datetime: models.DateTimeField = models.DateTimeField(auto_now=True, verbose_name="Posted on")
     status: models.CharField = models.CharField(max_length=20, default="PENDING")
     moderation_datetime: models.DateTimeField = models.DateTimeField(blank=True, null=True, verbose_name="Moderated on")
