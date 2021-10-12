@@ -97,6 +97,7 @@ class ChooseStationView(django.views.generic.edit.FormView):
     Author note:
         This feature is for development purposes only and should be removed from a production environment.
     """
+    # Author note: This feature is for development purposes only and should be removed from a production environment.
     template_name = "select_station_form.html"
     form_class = forms.StationForm
 
@@ -140,8 +141,9 @@ class ModeratorView(django.views.generic.edit.FormView):
         self.update_message and finally self.success_url will be set to return user to the same page containing a clean
         form.
 
-        Args: form: A forms.ModerationForm instance with it's datafields filled. This argument is passed by the
-        class' post() method.
+        Args:
+            form: A forms.ModerationForm instance with it's datafields filled. This argument is passed by the
+            class' post() method.
 
         Returns:
             A super call to parent form_valid which will return a redirect to self.success_url.
