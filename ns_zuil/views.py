@@ -156,7 +156,7 @@ class ModeratorView(django.views.generic.edit.FormView):
         """Updates a models.Message instance using the dictionary data together with the current time and current user.
 
         Args:
-            data:A dictionary containing the key status.
+            data: A dictionary containing the key status.
 
         Returns:
             None.
@@ -169,10 +169,21 @@ class ModeratorView(django.views.generic.edit.FormView):
         self.message.save()
 
     def build_tweet(self) -> str:
+        """Uses self.message to build message which can be tweeted.
+
+        Returns:
+            String in the format of: '[fullname] op [station] zegt: [message].
+        """
         tweet: str = f"{self.message.fullname} op {self.message.station_fk} zegt:\n{self.message.message}"
         return tweet
 
-    def tweet_message(self) -> Any:
+    def tweet_message(self) -> int:
+        """Uses the TwitterAPI together with keys taken from .env file. A message will be built using
+        self.build_tweet and is used as a parameter for a request to the statuses/update resource.
+
+        Returns:
+            The statuscode of the request.
+        """
         api: TwitterAPI = TwitterAPI(os.getenv("TWITTER_API"),
                                      os.getenv("TWITTER_SECRET"),
                                      os.getenv("TWITTER_ACCESS_TOKEN"),
