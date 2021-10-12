@@ -16,9 +16,15 @@ settings:
 | Character type | English_Netherlands.1252 |
 | Connection limit | -1 |
 
+## Twitter
+
+You need to have an approved developer account for twitter and have access to the Twitter API.
+
 ## Dotenv
 
 A file called `.env` is to be placed in the project root. This file contains the following constant.
+
+### Database settings
 
 `DB_NAME`: Name of the database as supplied above.
 
@@ -30,12 +36,30 @@ A file called `.env` is to be placed in the project root. This file contains the
 
 `DB_HOST`: Host adres for database. (Default: 127.0.0.1)
 
+### Django settings
+
 `DJANGO_SECRET`: Secret key used for Django. Since it is exposed already here it is: 
 django-insecure-5xt#&&57ek%9+u5d5!crr^um3mpmpz(h*%()73qw+dxn6+31$t
+
+### App settings
 
 `DISPLAY_INTERVAL`: Amount of time that passes before a message is no longer displayed, in hours. (Default: 2)
 
 `WEATHER_API_KEY`: To use this either generate an openweathermap API key yourself or email me for mine.
+
+### Twitter settings
+
+`TWITTER_API`: Consumer key for the Twitter API.
+
+`TWITTER_SECRET`: Consumer secret key for the Twitter API.
+
+`TWITTER_BEARER`: Bearer token for the Twitter API.
+
+`TWITTER_ACCESS_TOKEN`: Access token for user account.
+
+`TWITTER_ACCESS_TOKEN_SECRET`: Access token secret for user account.
+
+`TWITTER_USER`: User id.
 
 Template:
 ```dotenv
@@ -47,6 +71,13 @@ DB_PORT=5432
 DB_HOST=127.0.0.1
 # Django settings
 DJANGO_SECRET=django-insecure-5xt#&&57ek%9+u5d5!crr^um3mpmpz(h*%()73qw+dxn6+31$t
+# Twitter settings
+TWITTER_API=
+TWITTER_SECRET=
+TWITTER_BEARER=
+TWITTER_ACCESS_TOKEN=
+TWITTER_ACCESS_TOKEN_SECRET=
+TWITTER_USER=
 # Application settings
 DISPLAY_INTERVAL=2
 WEATHER_API_KEY=
@@ -81,5 +112,6 @@ The project has the following urls to visit:
 | /moderate/ | moderate | moderation_form.html | ModeratorView | This page displays a single message which can be either accepted or denied using a form. The status in the Message model will be set accordingly. The next message will be displayed until there are no more messages. |
 | /moderate/denied-messages/ | denied | denied_messages_list.html | DeniedView | This displays a list of all denied messages. |
 | /display/[int:station_id] | display | display_list.html | DisplayView | This displays 10 most recently approved messages at a station defined in the url parameter station_id. If there are no recent messages the current weather will be displayed. |
+| /display/[int:station_id]/tweets | tweets | display_list.html | TweetView | This displays the 10 most recently posted tweets from all stations. If there are no tweets the current weather will be displayed. |
 | /admin/ |  |  |  | Administrators can use this to add users and to modify and create database entries. |
 | /login/ |  | login.html |  | Moderators and administrators can use this page to login to be able to access moderation pages. |
