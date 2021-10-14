@@ -148,7 +148,7 @@ class ModeratorView(django.views.generic.edit.FormView):
         self.message = self.get_context_data()["message"]
         cleaned: dict[Any] = form.cleaned_data
         self.update_message(cleaned)
-        if cleaned["status"] == "APPROVED":
+        if self.message.status == "ACCEPTED":
             self.tweet_message()
         self.success_url = self.request.path_info
         return super().form_valid(form)
