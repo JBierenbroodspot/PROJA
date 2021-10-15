@@ -317,6 +317,7 @@ class TweetView(django.views.generic.TemplateView):
         Returns: A list containing html code of tweets posted by a specific user in a specific time range and an
         empty list if there are no tweets.
         """
+        tweets: list[str] = []
         api: TwitterAPI = TwitterAPI(os.getenv("TWITTER_API"),
                                      os.getenv("TWITTER_SECRET"),
                                      os.getenv("TWITTER_ACCESS_TOKEN"),
@@ -327,22 +328,24 @@ class TweetView(django.views.generic.TemplateView):
         # Subtracts now - DISPLAY_INTERVAL from now.
         start_time: datetime.datetime = now - datetime.timedelta(hours=float(os.getenv("DISPLAY_INTERVAL")))
         # Removes microseconds because they are not supported by Twitter.
-        start_time.replace(microsecond=0)
+        start_time = start_time.replace(microsecond=0)
         # Data dictionary will be passed as a parameter.
         data: dict[str, Any] = {
             "start_time": start_time.isoformat(),
+            "tweet.fields": ["created_at"],
         }
         user_id: str = os.getenv("TWITTER_USER")
         # This will send a request to the users/:id/tweets resource of the Twitter API and it will return a list of the
         # id's of tweets posted by this user.
-        try:
-            status: TwitterResponse = api.request(f"users/:{user_id}/tweets", data).json()["data"]
-            return self.get_html_from_twitter_status(status)
-        except KeyError as e:
-            return []
+        status: dict[str, Any] = api.request(f"users/:{user_id}/tweets", data).json()
+        if "data" in status:
+            tweets = self.get_html_from_twitter_status(status["data"])
+        elif "errors" in status:
+            tweets = status["errors"]
+        return tweets
 
     @staticmethod
-    def get_html_from_twitter_status(status: TwitterResponse) -> list[str]:
+    def get_html_from_twitter_status(status: dict[str, Any]) -> list[str]:
         """Takes the id's out of a TwitterResponse containing a status and sends a request to publish.twitter's
         oembed resource with a link to the tweet for every tweet in the status. Then it will filter for the html code
         and adds it to a list.
