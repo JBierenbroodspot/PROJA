@@ -10,6 +10,7 @@ class Message(models.Model):
     post_datetime: models.DateTimeField = models.DateTimeField(auto_now=True, verbose_name="Posted on")
     status: models.CharField = models.CharField(max_length=20, default="PENDING")
     moderation_datetime: models.DateTimeField = models.DateTimeField(blank=True, null=True, verbose_name="Moderated on")
+    comment: models.CharField = models.CharField(max_length=255, blank=True, null=True)
     station_fk: models.ForeignKey = models.ForeignKey("Station", on_delete=models.CASCADE, verbose_name="Station")
     moderated_by_fk: models.ForeignKey = models.ForeignKey(User,
                                                            on_delete=models.SET_NULL,
