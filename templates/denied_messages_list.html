@@ -18,6 +18,7 @@
                 <th scope="col">Station</th>
                 <th scope="col">Moderated by</th>
                 <th scope="col">Moderated on</th>
+                <th scope="col">Comment</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,7 @@
                     <td>{{ message.station_fk }}</td>
                     <td>{{ message.moderated_by_fk.username }}</td>
                     <td>{{ message.moderation_datetime }}</td>
+                    <td>{{ message.comment }}</td>
                 </tr>
             {% endfor %}
 
