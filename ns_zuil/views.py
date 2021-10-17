@@ -164,6 +164,7 @@ class ModeratorView(django.views.generic.edit.FormView):
         """
         # Author note: See author note MessageView.create_message.
         self.message.status = data["status"]
+        self.message.comment = data["comment"]
         # make_aware makes the datetime instance aware of what timezone it is.
         self.message.moderation_datetime = make_aware(datetime.datetime.now())
         self.message.moderated_by_fk = self.request.user
